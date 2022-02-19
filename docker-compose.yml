@@ -1,0 +1,28 @@
+version: "3.0"
+services:
+    mariadb:
+        image: mariadb
+        container_name: mariadb_node_api
+        restart: always
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=bookDb
+        networks:
+            node_api:
+                aliases:
+                    - mysql
+    node_api:
+        image: bolscrapperapi
+        container_name: node_api
+        restart: always
+        depends_on:
+            - mariadb
+        ports:
+            - 8001:8001
+        networks:
+            node_api:
+                aliases:
+                    - api
+networks:
+    node_api:
+        external: true
